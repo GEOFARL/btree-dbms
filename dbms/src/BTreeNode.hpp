@@ -17,4 +17,6 @@ public:
 
   void traverse();
   BTreeNode *search(int key);
+
+  friend class BTree;
 };

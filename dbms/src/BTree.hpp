@@ -29,4 +29,6 @@ public:
   {
     return (root == nullptr) ? nullptr : root->search(k);
   }
+
+  void insert(int k);
 };
