@@ -1,1 +1,0 @@
-# pa-tsyhanok-mak
