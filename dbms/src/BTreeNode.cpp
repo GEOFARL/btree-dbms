@@ -31,7 +31,7 @@ void BTreeNode::traverse()
 
 BTreeNode *BTreeNode::search(int k)
 {
-  int i;
+  int i{};
   while (i < n && k > keys[i])
   {
     i += 1;
