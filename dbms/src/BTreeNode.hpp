@@ -19,9 +19,12 @@ public:
   void traverse();
   void insertNonFull(int key);
   void remove(int key);
+
   // i – position of child y in int children array
   // this method should be called whenever a node is full
   void splitChild(int i, BTreeNode *y);
+
+  int findKey(int key);
 
   BTreeNode *search(int key);
 

@@ -148,3 +148,41 @@ void BTreeNode::splitChild(int i, BTreeNode *y)
   keys[i] = y->keys[t - 1];
   n += 1;
 }
+
+// A utility function that returns the index of the first key that is
+// greater than or equal to k
+int BTreeNode::findKey(int k)
+{
+  int idx = 0;
+  while (idx < n && keys[idx] < k)
+    ++idx;
+  return idx;
+}
+
+void BTreeNode::remove(int key)
+{
+  int idx = findKey(key);
+
+  // The key to be removed is present in this node
+  if (idx < n && keys[idx] == key)
+  {
+    if (leaf)
+    {
+      // TODO: REMOVE FROM LEAF
+    }
+    else
+    {
+      // TODO: REMOVE FROM NON LEAF
+    }
+  }
+  else
+  {
+    // This node is a leaf, so key is not present
+    if (leaf)
+    {
+      cout << "The key " << key << " does not exist on the tree" << endl;
+    }
+
+    C[idx]->remove(key);
+  }
+}
