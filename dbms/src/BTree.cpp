@@ -16,7 +16,7 @@ void BTree::insert(int k)
     }
     else
     {
-      // TODO: IMPLEMENT INSERTING IN A NON FULL NODE
+      root->insertNonFull(k);
     }
   }
 }
