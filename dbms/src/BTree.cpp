@@ -35,3 +35,30 @@ void BTree::insert(int k)
     }
   }
 }
+
+void BTree::remove(int key)
+{
+  if (!root)
+  {
+    cout << "The tree is empty" << endl;
+    return;
+  }
+
+  root->remove(key);
+
+  if (root->n == 0)
+  {
+    BTreeNode *tmp = root;
+
+    if (root->leaf)
+    {
+      root = nullptr;
+    }
+    else
+    {
+      root = root->C[0];
+    }
+
+    delete tmp;
+  }
+}
