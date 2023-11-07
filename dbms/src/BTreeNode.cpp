@@ -11,6 +11,18 @@ BTreeNode::BTreeNode(int _t, bool _leaf)
   n = 0;
 }
 
+BTreeNode::~BTreeNode()
+{
+  delete[] keys;
+
+  for (int i = 0; i < n; i++)
+  {
+    delete C[i];
+  }
+
+  delete[] C;
+}
+
 void BTreeNode::traverse()
 {
   int i;

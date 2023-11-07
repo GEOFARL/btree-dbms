@@ -14,6 +14,7 @@ class BTreeNode
 
 public:
   BTreeNode(int _t, bool _leaf);
+  ~BTreeNode();
 
   void traverse();
   void insertNonFull(int key);

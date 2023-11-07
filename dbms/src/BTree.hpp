@@ -17,6 +17,11 @@ public:
     t = _t;
   }
 
+  ~BTree()
+  {
+    delete root;
+  }
+
   void traverse()
   {
     if (root)
