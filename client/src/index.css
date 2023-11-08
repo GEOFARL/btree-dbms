@@ -1,0 +1,21 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f5f9;
+  font-family: 'Poppins', sans-serif;
+}
+
+.centered {
+  width: max-content;
+  margin: 0 auto;
+}
+
+.form__heading {
+  font-size: 2rem;
+}
