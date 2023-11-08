@@ -12,7 +12,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-const string dbFilePath = "./db/db.txt";
+const string dbFilePath = "/Users/geofarl/repos/dbms-b-trees/lab3/dbms/db/db.txt";
 
 class DBMS
 {

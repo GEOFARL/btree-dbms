@@ -69,7 +69,7 @@ const Form = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/createPerson', {
+      const response = await fetch('http://localhost:8000/api/person/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
