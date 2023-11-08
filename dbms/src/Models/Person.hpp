@@ -17,6 +17,12 @@ struct Person
   Person(string fname, string lname, string city, int age)
       : fname{fname}, lname{lname}, city{city}, age{age}, id{++count} {}
 
+  Person(int id, string fname, string lname, string city, int age)
+      : fname{fname}, lname{lname}, city{city}, age{age}, id{id}
+  {
+    count += 1;
+  }
+
   ~Person()
   {
     count -= 1;

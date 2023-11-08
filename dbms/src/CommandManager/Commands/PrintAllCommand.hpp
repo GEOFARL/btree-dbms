@@ -5,16 +5,16 @@
 #include <string>
 
 #include "../ICommand.hpp"
-#include "../../BTree/BTree.hpp"
+#include "../../DBMS/DBMS.hpp"
 
 using namespace std;
 
 class PrintAllCommand : public ICommand
 {
-  BTree &btree;
+  DBMS &dbms;
 
 public:
-  PrintAllCommand(BTree &tree) : btree(tree) {}
+  PrintAllCommand(DBMS &dbms) : dbms(dbms) {}
   virtual ~PrintAllCommand() {}
 
   virtual void execute(const vector<string> &args) override
@@ -26,7 +26,8 @@ public:
     }
 
     cout << "Printing values..." << endl;
-    btree.traverse();
+    dbms.btree->traverse();
+    cout << "Done!" << endl;
   }
   virtual string name() const override { return "print"; }
 };

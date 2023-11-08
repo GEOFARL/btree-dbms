@@ -5,28 +5,28 @@
 #include <string>
 
 #include "../ICommand.hpp"
-#include "../../BTree/BTree.hpp"
+#include "../../DBMS/DBMS.hpp"
 
 using namespace std;
 
 class RemoveCommand : public ICommand
 {
-  BTree &btree;
+  DBMS &dbms;
 
 public:
-  RemoveCommand(BTree &tree) : btree(tree) {}
+  RemoveCommand(DBMS &dbms) : dbms(dbms) {}
   virtual ~RemoveCommand() {}
 
   virtual void execute(const vector<string> &args) override
   {
     if (args.size() != 1)
     {
-      cerr << "Usage: remove <value>" << endl;
+      cerr << "Usage: remove <fname>" << endl;
       return;
     }
 
-    int value = std::stoi(args[0]);
-    bool removed = btree.remove(value);
+    string value = args[0];
+    bool removed = dbms.btree->remove(value);
 
     if (removed)
     {

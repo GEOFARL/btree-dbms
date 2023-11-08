@@ -7,19 +7,31 @@
 
 #include "../BTree/BTree.hpp"
 #include "Reader.hpp"
+#include "Writer.hpp"
 
 using namespace std;
 namespace fs = std::filesystem;
 
+const string dbFilePath = "./db/db.txt";
+
 class DBMS
 {
   const int T;
-  BTree *btree;
-  Reader reader;
 
 public:
-  DBMS() : T{10}, btree{new BTree(T)}, reader{btree}
+  BTree *btree;
+
+private:
+  Reader reader;
+  Writer writer;
+
+public:
+  DBMS() : T{10}, btree{new BTree(T)}, reader{btree, dbFilePath}, writer{btree, dbFilePath}
   {
   }
-  ~DBMS() { delete btree; }
+  ~DBMS()
+  {
+    writer.writeTree();
+    delete btree;
+  }
 };
