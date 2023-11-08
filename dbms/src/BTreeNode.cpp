@@ -168,11 +168,11 @@ void BTreeNode::remove(int key)
   {
     if (leaf)
     {
-      // TODO: REMOVE FROM LEAF
+      removeFromLeaf(idx);
     }
     else
     {
-      // TODO: REMOVE FROM NON LEAF
+      removeFromNonLeaf(idx);
     }
   }
   else
@@ -184,5 +184,76 @@ void BTreeNode::remove(int key)
     }
 
     C[idx]->remove(key);
+
+    // TODO: Handle edge cases:
+    // node has t - 1 keys
+    // the key is in the last node which has been merged with the previous one
   }
+}
+
+void BTreeNode::removeFromLeaf(int idx)
+{
+  for (int i = idx + 1; i < n; i++)
+  {
+    keys[i - 1] = keys[i];
+  }
+
+  n -= 1;
+}
+
+void BTreeNode::removeFromNonLeaf(int idx)
+{
+  int key = keys[idx];
+
+  // If the child that precedes key has at least t keys
+  // Find the predecessor of key in the subtree rooted at
+  // that child. Then replace k by its predecessor
+  if (C[idx]->n > (t - 1))
+  {
+    int pred = getPred(idx);
+    keys[idx] = pred;
+    C[idx]->remove(pred);
+  }
+  // If the left child doesn't have enough keys, examine
+  // right child. If it has enough keys, replace current key
+  // with its successor
+  else if (C[idx + 1]->n > (t - 1))
+  {
+    int succ = getSucc(idx);
+    keys[idx] = succ;
+    C[idx + 1]->remove(succ);
+  }
+  // Left and Right children have t - 1 keys
+  // We need to merge them and add this key in the middle
+  // Then remove that key from newly created node
+  else
+  {
+    // TODO: implement merge and removal
+  }
+}
+
+int BTreeNode::getPred(int idx)
+{
+  // Find the rightmost node that is the leaf
+  BTreeNode *cur = C[idx];
+  while (!cur->leaf)
+  {
+    cur = cur->C[cur->n];
+  }
+
+  // Last key of the leaf
+  return cur->keys[cur->n - 1];
+}
+
+int BTreeNode::getSucc(int idx)
+{
+  // Find the leftmost node that is the leaf
+  BTreeNode *cur = C[idx + 1];
+  while (!cur->leaf)
+  {
+    cur = cur->C[0];
+  }
+
+  // Return the first key of the leaf
+  return cur->keys[0];
 }
