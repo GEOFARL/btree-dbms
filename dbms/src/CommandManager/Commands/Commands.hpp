@@ -4,3 +4,4 @@
 #include "ModifyCommand.hpp"
 #include "PrintAllCommand.hpp"
 #include "RemoveCommand.hpp"
+#include "SearchCommand.hpp"

@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
   manager.registerCommand(make_unique<ModifyCommand>(dbms));
   manager.registerCommand(make_unique<PrintAllCommand>(dbms));
   manager.registerCommand(make_unique<RemoveCommand>(dbms));
+  manager.registerCommand(make_unique<SearchCommand>(dbms));
 
   string commandName = argv[1];
   vector<string> commandArgs(argv + 2, argv + argc);

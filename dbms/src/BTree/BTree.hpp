@@ -37,6 +37,25 @@ public:
     return (root == nullptr) ? nullptr : root->search(k);
   }
 
+  Person *searchPerson(string &k)
+  {
+    BTreeNode *node = search(k);
+    if (!node)
+    {
+      return nullptr;
+    }
+
+    for (int i = 0; i < node->n; i++)
+    {
+      if (node->keys[i].first == k)
+      {
+        return node->keys[i].second;
+      }
+    }
+
+    return nullptr;
+  }
+
   void insert(Person *person);
   bool remove(string k);
   bool modify(string k, Person *person);
