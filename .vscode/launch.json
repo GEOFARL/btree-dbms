@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Debug",
       "program": "${workspaceFolder}/lab3/dbms/build/program",
-      "args": [],
+      "args": ["insert"],
       "cwd": "${workspaceFolder}"
     }
   ]

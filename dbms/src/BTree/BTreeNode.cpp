@@ -159,7 +159,7 @@ int BTreeNode::findKey(int k)
   return idx;
 }
 
-void BTreeNode::remove(int key)
+bool BTreeNode::remove(int key)
 {
   int idx = findKey(key);
 
@@ -180,7 +180,7 @@ void BTreeNode::remove(int key)
     // This node is a leaf, so key is not present
     if (leaf)
     {
-      cout << "The key " << key << " does not exist on the tree" << endl;
+      return false;
     }
 
     bool inTheLastChild = (idx == n);
@@ -192,13 +192,15 @@ void BTreeNode::remove(int key)
 
     if (inTheLastChild && idx > n)
     {
-      C[idx - 1]->remove(key);
+      return C[idx - 1]->remove(key);
     }
     else
     {
-      C[idx]->remove(key);
+      return C[idx]->remove(key);
     }
   }
+
+  return true;
 }
 
 void BTreeNode::removeFromLeaf(int idx)

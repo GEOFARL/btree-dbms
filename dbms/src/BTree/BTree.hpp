@@ -36,5 +36,5 @@ public:
   }
 
   void insert(int k);
-  void remove(int k);
+  bool remove(int k);
 };

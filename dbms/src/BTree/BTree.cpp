@@ -36,15 +36,15 @@ void BTree::insert(int k)
   }
 }
 
-void BTree::remove(int key)
+bool BTree::remove(int key)
 {
   if (!root)
   {
     cout << "The tree is empty" << endl;
-    return;
+    return false;
   }
 
-  root->remove(key);
+  bool removed = root->remove(key);
 
   if (root->n == 0)
   {
@@ -61,4 +61,6 @@ void BTree::remove(int key)
 
     delete tmp;
   }
+
+  return removed;
 }

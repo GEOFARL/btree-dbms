@@ -7,8 +7,10 @@ SRC_DIR = src
 OBJ_DIR = obj
 BUILD_DIR = build
 
-# Files
-SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+# Source files (list them explicitly)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp)
+
+# Generate corresponding object file names
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 EXE := $(BUILD_DIR)/program
 
@@ -24,4 +26,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)/*.o $(BUILD_DIR)/my_program
+	rm -rf $(OBJ_DIR)/*.o $(BUILD_DIR)/program
+
+EXE := $(BUILD_DIR)/program

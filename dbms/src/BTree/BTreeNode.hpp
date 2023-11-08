@@ -17,7 +17,7 @@ public:
   ~BTreeNode();
 
 private:
-  void remove(int key);
+  bool remove(int key);
   void traverse();
   void insertNonFull(int key);
   void removeFromLeaf(int index);
