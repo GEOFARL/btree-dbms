@@ -84,7 +84,7 @@ const AddForm = () => {
 
   return (
     <form className="form" onSubmit={submitHandler}>
-      <h2 className="form__heading">Add new person</h2>
+      <h2 className="form__heading">Add a new person</h2>
 
       <div className="form-control">
         <label htmlFor="fName">First Name: </label>

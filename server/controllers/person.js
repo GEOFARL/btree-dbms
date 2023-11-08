@@ -46,3 +46,37 @@ export const deletePerson = (req, res) => {
     res.send({});
   });
 };
+
+// @desc    Retrieve all people data
+// @route   GET /api/person/getAll
+// @access  Public
+export const getAll = (req, res) => {
+  const program = runProgram(['print']);
+  const response = [];
+
+  program.stdout.on('data', (chunk) => {
+    const data = chunk
+      .toString()
+      .replace('Printing values...', '')
+      .replace('Done!', '')
+      .split('\n')
+      .filter((line) => line.trim() !== '')
+      .map((line) => line.replace(/\n/g, '').trim());
+
+    data.map((line) => {
+      const [id, firstName, lastName, city, age] = line.split(',');
+      response.push({ id, firstName, lastName, city, age });
+    });
+    console.log(response);
+  });
+
+  program.stderr.on('data', (data) => {
+    console.log('Error:');
+    console.error(data.toString());
+  });
+
+  program.on('close', (code) => {
+    console.log(`Closed with code ${code}`);
+    res.send(response);
+  });
+};

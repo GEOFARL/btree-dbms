@@ -34,7 +34,7 @@ const RemoveForm = () => {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <h2 className="form__heading">Remove person</h2>
+      <h2 className="form__heading">Remove the person</h2>
 
       <div className="form-control">
         <label htmlFor="firstName">First Name: </label>
