@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 
   CommandManager manager;
   manager.registerCommand(make_unique<InsertCommand>(dbms));
+  manager.registerCommand(make_unique<ModifyCommand>(dbms));
   manager.registerCommand(make_unique<PrintAllCommand>(dbms));
   manager.registerCommand(make_unique<RemoveCommand>(dbms));
 

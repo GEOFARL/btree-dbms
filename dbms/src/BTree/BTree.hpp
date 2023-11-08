@@ -39,4 +39,5 @@ public:
 
   void insert(Person *person);
   bool remove(string k);
+  bool modify(string k, Person *person);
 };

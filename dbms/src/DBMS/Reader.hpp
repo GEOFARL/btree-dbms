@@ -28,13 +28,28 @@ public:
 private:
   void loadTree()
   {
+    int maxId = -1;
     while (!file.eof())
     {
       vector<string> tokens = getLineSplitIntoTokens();
       if (tokens.size() == 0)
         continue;
-      btree->insert(new Person(stoi(tokens[0]), tokens[1], tokens[2], tokens[3], stoi(tokens[4])));
+      int id, age;
+      try
+      {
+        id = stoi(tokens[0]);
+        age = stoi(tokens[4]);
+      }
+      catch (exception &e)
+      {
+        cerr << "Error loading a file, invalid id or age" << endl;
+        exit(1);
+      }
+      btree->insert(new Person(id, tokens[1], tokens[2], tokens[3], age));
+      if (id > maxId)
+        maxId = id;
     }
+    Person::count = maxId;
   }
 
   vector<string> getLineSplitIntoTokens()

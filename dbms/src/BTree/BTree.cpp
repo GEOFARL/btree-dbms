@@ -64,3 +64,16 @@ bool BTree::remove(string key)
 
   return removed;
 }
+
+bool BTree::modify(string key, Person *person)
+{
+  if (!root)
+  {
+    cout << "The tree is empty" << endl;
+    return false;
+  }
+
+  bool modified = root->modify(key, person);
+
+  return modified;
+}

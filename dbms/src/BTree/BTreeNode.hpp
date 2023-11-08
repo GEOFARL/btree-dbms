@@ -21,6 +21,7 @@ public:
 
 private:
   bool remove(string key);
+  bool modify(string key, Person *person);
   void traverse();
   void insertNonFull(Person *person);
   void removeFromLeaf(int index);

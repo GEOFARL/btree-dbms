@@ -31,7 +31,12 @@ public:
   }
   ~DBMS()
   {
-    writer.writeTree();
+    save();
     delete btree;
+  }
+
+  void save()
+  {
+    writer.writeTree();
   }
 };
