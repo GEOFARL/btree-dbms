@@ -1,9 +1,10 @@
 #include "BTreeNode.hpp"
 
-BTreeNode::BTreeNode(int _t, bool _leaf)
+BTreeNode::BTreeNode(int _t, bool _leaf, int _pageNumber = 0)
 {
   t = _t;
   leaf = _leaf;
+  pageNumber = _pageNumber;
 
   keys = new int[2 * t - 1];
   C = new BTreeNode *[2 * t];

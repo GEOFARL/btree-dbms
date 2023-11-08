@@ -11,9 +11,10 @@ class BTreeNode
   BTreeNode **C;
   int n;
   bool leaf;
+  int pageNumber;
 
 public:
-  BTreeNode(int _t, bool _leaf);
+  BTreeNode(int _t, bool _leaf, int _pageNumber = 0);
   ~BTreeNode();
 
 private:
