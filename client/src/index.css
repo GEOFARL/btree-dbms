@@ -19,3 +19,7 @@ body {
 .form__heading {
   font-size: 2rem;
 }
+
+.form__error {
+  color: red;
+}
