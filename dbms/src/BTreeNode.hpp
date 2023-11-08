@@ -34,6 +34,9 @@ private:
   int getPred(int index);
   int getSucc(int index);
 
+  void borrowFromPrev(int index);
+  void borrowFromNext(int index);
+
   BTreeNode *search(int key);
 
   friend class BTree;

@@ -312,7 +312,7 @@ void BTreeNode::fill(int idx)
   // Borrow a key from that child
   if (idx != 0 && C[idx - 1]->n > t - 1)
   {
-    // TODO: Borrow from previous child
+    borrowFromPrev(idx);
   }
   // If the next child has more than t - 1 keys
   // Borrow a key from that child
@@ -332,4 +332,35 @@ void BTreeNode::fill(int idx)
       merge(idx - 1);
     }
   }
+}
+
+void BTreeNode::borrowFromPrev(int idx)
+{
+  BTreeNode *child = C[idx];
+  BTreeNode *sibling = C[idx - 1];
+
+  for (int i = child->n - 1; i >= 0; i--)
+  {
+    child->keys[i + 1] = child->keys[i];
+  }
+
+  if (!child->leaf)
+  {
+    for (int i = child->n; i >= 0; i--)
+    {
+      child->C[i + 1] = child->C[i];
+    }
+  }
+
+  child->keys[0] = keys[idx - 1];
+
+  if (!child->leaf)
+  {
+    child->C[0] = sibling->C[sibling->n];
+  }
+
+  keys[idx - 1] = sibling->keys[sibling->n - 1];
+
+  child->n += 1;
+  sibling->n -= 1;
 }
