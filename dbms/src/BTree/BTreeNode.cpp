@@ -5,22 +5,18 @@ BTreeNode::BTreeNode(int _t, bool _leaf)
   t = _t;
   leaf = _leaf;
 
-  keys = new int[2 * t - 1];
-  C = new BTreeNode *[2 * t];
+  keys.reserve(2 * t - 1);
+  C.reserve(2 * t);
 
   n = 0;
 }
 
 BTreeNode::~BTreeNode()
 {
-  delete[] keys;
-
   for (int i = 0; i < n; i++)
   {
     delete C[i];
   }
-
-  delete[] C;
 }
 
 void BTreeNode::traverse()
@@ -32,7 +28,7 @@ void BTreeNode::traverse()
     {
       C[i]->traverse();
     }
-    cout << " " << keys[i];
+    cout << *keys[i].second << endl;
   }
 
   if (leaf == false)
@@ -41,15 +37,15 @@ void BTreeNode::traverse()
   }
 }
 
-BTreeNode *BTreeNode::search(int k)
+BTreeNode *BTreeNode::search(string k)
 {
   int i{};
-  while (i < n && k > keys[i])
+  while (i < n && k > keys[i].first)
   {
     i += 1;
   }
 
-  if (keys[i] == k)
+  if (keys[i].first == k)
   {
     return this;
   }
@@ -62,7 +58,7 @@ BTreeNode *BTreeNode::search(int k)
   return C[i]->search(k);
 }
 
-void BTreeNode::insertNonFull(int key)
+void BTreeNode::insertNonFull(Person *person)
 {
   // Index of rightmost element
   int i = n - 1;
@@ -70,20 +66,20 @@ void BTreeNode::insertNonFull(int key)
   {
     // Find a place to insert and move all the
     // elements greater than a key one place ahead
-    while (i >= 0 && keys[i] > key)
+    while (i >= 0 && keys[i].first > person->fname)
     {
       keys[i + 1] = keys[i];
       i -= 1;
     }
 
     // Inserts new key
-    keys[i + 1] = key;
+    keys[i + 1] = make_pair(person->fname, person);
     n += 1;
   }
   else // Node is not a leaf
   {
     // Find a child that will have this new key
-    while (i >= 0 && keys[i] > key)
+    while (i >= 0 && keys[i].first > person->fname)
     {
       i -= 1;
     }
@@ -97,13 +93,13 @@ void BTreeNode::insertNonFull(int key)
       // key will get to the keys array at i + 1 position
       // so we need to find out in which of the children
       // to insert a new key
-      if (keys[i + 1] < key)
+      if (keys[i + 1].first < person->fname)
       {
         i += 1;
       }
     }
 
-    C[i + 1]->insertNonFull(key);
+    C[i + 1]->insertNonFull(person);
   }
 }
 
@@ -151,20 +147,20 @@ void BTreeNode::splitChild(int i, BTreeNode *y)
 
 // A utility function that returns the index of the first key that is
 // greater than or equal to k
-int BTreeNode::findKey(int k)
+int BTreeNode::findKey(string &k)
 {
   int idx = 0;
-  while (idx < n && keys[idx] < k)
+  while (idx < n && keys[idx].first < k)
     ++idx;
   return idx;
 }
 
-bool BTreeNode::remove(int key)
+bool BTreeNode::remove(string key)
 {
   int idx = findKey(key);
 
   // The key to be removed is present in this node
-  if (idx < n && keys[idx] == key)
+  if (idx < n && keys[idx].first == key)
   {
     if (leaf)
     {
@@ -215,25 +211,25 @@ void BTreeNode::removeFromLeaf(int idx)
 
 void BTreeNode::removeFromNonLeaf(int idx)
 {
-  int key = keys[idx];
+  string &key = keys[idx].first;
 
   // If the child that precedes key has at least t keys
   // Find the predecessor of key in the subtree rooted at
   // that child. Then replace k by its predecessor
   if (C[idx]->n > (t - 1))
   {
-    int pred = getPred(idx);
+    pair<string, Person *> &pred = getPred(idx);
     keys[idx] = pred;
-    C[idx]->remove(pred);
+    C[idx]->remove(pred.first);
   }
   // If the left child doesn't have enough keys, examine
   // right child. If it has enough keys, replace current key
   // with its successor
   else if (C[idx + 1]->n > (t - 1))
   {
-    int succ = getSucc(idx);
+    pair<string, Person *> &succ = getSucc(idx);
     keys[idx] = succ;
-    C[idx + 1]->remove(succ);
+    C[idx + 1]->remove(succ.first);
   }
   // Left and Right children have t - 1 keys
   // We need to merge them and add this key in the middle
@@ -245,7 +241,7 @@ void BTreeNode::removeFromNonLeaf(int idx)
   }
 }
 
-int BTreeNode::getPred(int idx)
+pair<string, Person *> &BTreeNode::getPred(int idx)
 {
   // Find the rightmost node that is the leaf
   BTreeNode *cur = C[idx];
@@ -258,7 +254,7 @@ int BTreeNode::getPred(int idx)
   return cur->keys[cur->n - 1];
 }
 
-int BTreeNode::getSucc(int idx)
+pair<string, Person *> &BTreeNode::getSucc(int idx)
 {
   // Find the leftmost node that is the leaf
   BTreeNode *cur = C[idx + 1];

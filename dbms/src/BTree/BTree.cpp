@@ -1,11 +1,11 @@
 #include "BTree.hpp"
 
-void BTree::insert(int k)
+void BTree::insert(Person *person)
 {
   if (!root)
   {
     root = new BTreeNode(t, true);
-    root->keys[0] = k;
+    root->keys[0] = make_pair(person->fname, person);
     root->n = 1;
   }
   else
@@ -21,22 +21,22 @@ void BTree::insert(int k)
       // We need to decide which one of the is going to have
       // a new key
       int i = 0;
-      if (s->keys[0] < k)
+      if (s->keys[0].first < person->fname)
       {
         i += 1;
       }
-      s->C[i]->insertNonFull(k);
+      s->C[i]->insertNonFull(person);
 
       root = s;
     }
     else
     {
-      root->insertNonFull(k);
+      root->insertNonFull(person);
     }
   }
 }
 
-bool BTree::remove(int key)
+bool BTree::remove(string key)
 {
   if (!root)
   {

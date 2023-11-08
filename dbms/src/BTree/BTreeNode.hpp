@@ -1,14 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+
+#include "../Models/Person.hpp"
 
 using namespace std;
 
 class BTreeNode
 {
-  int *keys;
+  vector<pair<string, Person *>> keys;
+  vector<BTreeNode *> C;
   int t;
-  BTreeNode **C;
   int n;
   bool leaf;
 
@@ -17,9 +20,9 @@ public:
   ~BTreeNode();
 
 private:
-  bool remove(int key);
+  bool remove(string key);
   void traverse();
-  void insertNonFull(int key);
+  void insertNonFull(Person *person);
   void removeFromLeaf(int index);
   void removeFromNonLeaf(int index);
 
@@ -30,14 +33,14 @@ private:
   void merge(int index);
   void fill(int index);
 
-  int findKey(int key);
-  int getPred(int index);
-  int getSucc(int index);
+  int findKey(string &key);
+  pair<string, Person *> &getPred(int index);
+  pair<string, Person *> &getSucc(int index);
 
   void borrowFromPrev(int index);
   void borrowFromNext(int index);
 
-  BTreeNode *search(int key);
+  BTreeNode *search(string key);
 
   friend class BTree;
 };

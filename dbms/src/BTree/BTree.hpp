@@ -3,6 +3,8 @@
 #include <iostream>
 #include "BTreeNode.hpp"
 
+#include "../Models/Person.hpp"
+
 using namespace std;
 
 class BTree
@@ -30,11 +32,11 @@ public:
     }
   }
 
-  BTreeNode *search(int k)
+  BTreeNode *search(string &k)
   {
     return (root == nullptr) ? nullptr : root->search(k);
   }
 
-  void insert(int k);
-  bool remove(int k);
+  void insert(Person *person);
+  bool remove(string k);
 };
