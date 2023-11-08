@@ -1,9 +1,11 @@
-import Form from './components/Form';
+import AddForm from './components/AddForm';
+import RemoveForm from './components/RemoveForm';
 
 function App() {
   return (
     <div className="centered">
-      <Form />
+      <AddForm />
+      <RemoveForm />
     </div>
   );
 }

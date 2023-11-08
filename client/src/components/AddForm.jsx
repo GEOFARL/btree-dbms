@@ -14,7 +14,7 @@ const defaultFormError = {
   age: null,
 };
 
-const Form = () => {
+const AddForm = () => {
   const [formData, setFormData] = useState(defaultFormData);
   const [formError, setFormError] = useState(defaultFormError);
   const [submitted, setSubmitted] = useState(false);
@@ -177,4 +177,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default AddForm;
