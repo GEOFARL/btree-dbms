@@ -228,7 +228,8 @@ void BTreeNode::removeFromNonLeaf(int idx)
   // Then remove that key from newly created node
   else
   {
-    // TODO: implement merge and removal
+    merge(idx);
+    C[idx]->remove(key);
   }
 }
 
@@ -256,4 +257,48 @@ int BTreeNode::getSucc(int idx)
 
   // Return the first key of the leaf
   return cur->keys[0];
+}
+
+void BTreeNode::merge(int idx)
+{
+  BTreeNode *child = C[idx];
+  BTreeNode *sibling = C[idx + 1];
+
+  // Pull the current key and insert it at the end of
+  // the current node
+  child->keys[t - 1] = keys[idx];
+
+  // Copy keys from sibling to child
+  for (int i = 0; i < sibling->n; i++)
+  {
+    child->keys[t + i] = sibling->keys[i];
+  }
+
+  // Copy child pointers
+  if (!child->leaf)
+  {
+    for (int i = 0; i <= sibling->n; i++)
+    {
+      child->C[t + i] = sibling->C[i];
+      sibling->C[i] = nullptr;
+    }
+  }
+
+  // Remove key from the current node
+  for (int i = idx + 1; i < n; i++)
+  {
+    keys[i - 1] = keys[i];
+  }
+
+  // Remove one child from the current node
+  for (int i = idx + 2; i <= n; i++)
+  {
+    C[i - 1] = C[i];
+  }
+
+  child->n += sibling->n + 1;
+  n -= 1;
+
+  delete sibling;
+  return;
 }
