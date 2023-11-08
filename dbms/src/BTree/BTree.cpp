@@ -4,7 +4,7 @@ void BTree::insert(int k)
 {
   if (!root)
   {
-    root = new BTreeNode(t, true, 0);
+    root = new BTreeNode(t, true);
     root->keys[0] = k;
     root->n = 1;
   }
