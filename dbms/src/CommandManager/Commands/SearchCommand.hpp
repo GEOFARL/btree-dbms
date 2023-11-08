@@ -28,7 +28,8 @@ public:
     }
 
     string key = args[0];
-    Person *person = dbms.btree->searchPerson(key);
+    int comparisons;
+    Person *person = dbms.btree->searchPerson(key, comparisons);
 
     if (!person)
     {
@@ -37,6 +38,7 @@ public:
     else
     {
       cout << "Found: " << *person << endl;
+      cout << "Comparisons: " << comparisons << endl;
     }
   }
   virtual string name() const override { return "search"; }

@@ -120,6 +120,19 @@ input {
   background-color: #374151;
 }
 
+.form__button.form__button--danger {
+  background-color: #dc2626;
+  border: 1px solid #991b1b;
+}
+
+.form__button.form__button--danger:hover {
+  background-color: #f87171;
+}
+
+.form__button.form__button--danger:active {
+  background-color: #b91c1c;
+}
+
 .control-panel {
   width: 100%;
   background-color: #cbd5e1;
@@ -135,6 +148,9 @@ input {
 
   display: flex;
   gap: 12px;
+
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-button {
@@ -160,4 +176,10 @@ input {
   justify-content: center;
   align-items: center;
   inset: 0;
+}
+
+.content__comparisons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

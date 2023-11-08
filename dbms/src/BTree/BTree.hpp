@@ -34,14 +34,14 @@ public:
     }
   }
 
-  BTreeNode *search(string &k)
+  BTreeNode *search(string &k, int &comparisons)
   {
-    return (root == nullptr) ? nullptr : root->search(k);
+    return (root == nullptr) ? nullptr : root->search(k, comparisons);
   }
 
-  Person *searchPerson(string &k)
+  Person *searchPerson(string &k, int &comparisons)
   {
-    BTreeNode *node = search(k);
+    BTreeNode *node = search(k, comparisons);
     if (!node)
     {
       return nullptr;

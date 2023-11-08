@@ -63,7 +63,7 @@ const RemoveForm = () => {
           {error && <p className="form__error">{error}</p>}
         </div>
 
-        <button className="form__button">Remove</button>
+        <button className="form__button form__button--danger">Remove</button>
       </form>
     </Card>
   );

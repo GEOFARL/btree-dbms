@@ -37,26 +37,29 @@ void BTreeNode::traverse()
   }
 }
 
-BTreeNode *BTreeNode::search(string k)
+BTreeNode *BTreeNode::search(string k, int &comparisons)
 {
   int i{};
-  // while (i < n && k > keys[i].first)
+  comparisons += 1;
   while (i < n && caseInsensitiveStringCompare(keys[i].first, k))
   {
+    comparisons += 1;
     i += 1;
   }
 
+  comparisons += 1;
   if (keys[i].first == k)
   {
     return this;
   }
 
+  comparisons += 1;
   if (leaf)
   {
     return nullptr;
   }
 
-  return C[i]->search(k);
+  return C[i]->search(k, comparisons);
 }
 
 void BTreeNode::insertNonFull(Person *person)
@@ -408,7 +411,8 @@ void BTreeNode::borrowFromNext(int idx)
 
 bool BTreeNode::modify(string key, Person *person)
 {
-  BTreeNode *currentNode = search(key);
+  int comparisons{};
+  BTreeNode *currentNode = search(key, comparisons);
   if (!currentNode)
   {
     return false;

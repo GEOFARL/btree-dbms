@@ -3,6 +3,8 @@ import fs from 'fs';
 import { runProgram, runProgramSync } from '../config/cppApp.js';
 import generatePerson from '../utils/generatePerson.js';
 
+let cachedPeople;
+
 // @desc    Create a new person
 // @route   POST /api/person/create
 // @access  Public
@@ -61,34 +63,38 @@ export const deletePerson = (req, res) => {
 // @desc    Retrieve all people data
 // @route   GET /api/person/getAll
 // @access  Public
-export const getAll = (req, res) => {
-  const program = runProgram(['print']);
-  const response = [];
+export const getAll = async (req, res) => {
+  return new Promise((resolve) => {
+    const program = runProgram(['print']);
+    const response = [];
 
-  program.stdout.on('data', (chunk) => {
-    const data = chunk
-      .toString()
-      .replace('Printing values...', '')
-      .replace('Done!', '')
-      .split('\n')
-      .filter((line) => line.trim() !== '')
-      .map((line) => line.replace(/\n/g, '').trim());
+    program.stdout.on('data', (chunk) => {
+      const data = chunk
+        .toString()
+        .replace('Printing values...', '')
+        .replace('Done!', '')
+        .split('\n')
+        .filter((line) => line.trim() !== '')
+        .map((line) => line.replace(/\n/g, '').trim());
 
-    data.map((line) => {
-      const [id, firstName, lastName, city, age] = line.split(',');
-      response.push({ id, firstName, lastName, city, age });
+      data.map((line) => {
+        const [id, firstName, lastName, city, age] = line.split(',');
+        response.push({ id, firstName, lastName, city, age });
+      });
+      console.log(response);
     });
-    console.log(response);
-  });
 
-  program.stderr.on('data', (data) => {
-    console.log('Error:');
-    console.error(data.toString());
-  });
+    program.stderr.on('data', (data) => {
+      console.log('Error:');
+      console.error(data.toString());
+    });
 
-  program.on('close', (code) => {
-    console.log(`Closed with code ${code}`);
-    res.send(response);
+    program.on('close', (code) => {
+      console.log(`Closed with code ${code}`);
+      cachedPeople = response;
+      res.send(response);
+      resolve();
+    });
   });
 };
 
@@ -142,13 +148,21 @@ export const searchPerson = (req, res) => {
 
   program.stdout.on('data', (chunk) => {
     if (chunk.toString().startsWith('Found:')) {
-      const data = chunk
-        .toString()
+      const dataString = chunk.toString();
+      const compIdx = dataString.indexOf('Comparisons: ');
+      const comparisons = dataString
+        .slice(compIdx)
+        .replace('Comparisons: ', '')
+        .replace(/\n/g, '')
+        .trim();
+
+      const data = dataString
+        .slice(0, compIdx)
         .replace('Found: ', '')
         .replace(/\n/g, '')
         .trim();
       const [id, firstName, lastName, city, age] = data.split(',');
-      response = { id, firstName, lastName, city, age };
+      response = { id, firstName, lastName, city, age, comparisons };
     }
   });
 
@@ -192,4 +206,39 @@ export const dropDB = (req, res) => {
   }
 
   res.send({ status: 'DB dropped successfully' });
+};
+
+const getComparisonsForOneSearch = async (searchKey) => {
+  return new Promise((resolve) => {
+    const program = runProgram(['search', searchKey]);
+
+    program.stdout.on('data', (chunk) => {
+      if (chunk.toString().startsWith('Found:')) {
+        const dataString = chunk.toString();
+        const compIdx = dataString.indexOf('Comparisons: ');
+        const comparisons = dataString
+          .slice(compIdx)
+          .replace('Comparisons: ', '')
+          .replace(/\n/g, '')
+          .trim();
+        resolve(comparisons);
+      }
+    });
+  });
+};
+
+// @desc    Get an average number of comparisons
+// @route   GET /api/person/getComparisons
+// @access  Public
+export const getComparisons = async (req, res) => {
+  let totalComparisons = 0;
+  for (let i = 0; i < 10; i += 1) {
+    if (!cachedPeople) {
+      await getAll();
+    }
+    const searchKey =
+      cachedPeople[Math.floor(Math.random() * cachedPeople.length)].firstName;
+    totalComparisons += +(await getComparisonsForOneSearch(searchKey));
+  }
+  res.send({ comparisons: Math.ceil(totalComparisons / 10) });
 };

@@ -41,7 +41,7 @@ private:
   void borrowFromPrev(int index);
   void borrowFromNext(int index);
 
-  BTreeNode *search(string key);
+  BTreeNode *search(string key, int &comparisons);
 
   bool caseInsensitiveStringCompare(const std::string &str1, const std::string &str2);
 

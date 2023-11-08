@@ -5,6 +5,7 @@ import {
   dropDB,
   generateData,
   getAll,
+  getComparisons,
   modifyPerson,
   searchPerson,
 } from '../controllers/person.js';
@@ -18,5 +19,6 @@ router.patch('/modify', modifyPerson);
 router.get('/search', searchPerson);
 router.post('/generateData', generateData);
 router.delete('/dropDB', dropDB);
+router.get('/getComparisons', getComparisons);
 
 export default router;
