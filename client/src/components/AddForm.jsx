@@ -111,7 +111,10 @@ const AddForm = () => {
           }
         );
         const data = await response.json();
-        dispatch({ type: 'MODIFY_PERSON', payload: data });
+        dispatch({
+          type: 'MODIFY_PERSON',
+          payload: { key: modificationName, data },
+        });
         modifyDispatch({ type: 'NO_MODIFY' });
       }
 

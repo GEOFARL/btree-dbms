@@ -27,9 +27,9 @@ export default function peopleReducer(state, action) {
       console.log(action);
       let found = false;
       return state.map((person) => {
-        if (!found && person.firstName === action.payload.firstName) {
+        if (!found && person.firstName === action.payload.key) {
           found = true;
-          return action.payload;
+          return action.payload.data;
         }
         return person;
       });
