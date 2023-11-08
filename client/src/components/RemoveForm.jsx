@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { PeopleContext } from '../context/PeopleContextProvider';
+import Card from './Card';
 
 const RemoveForm = () => {
   const { dispatch } = useContext(PeopleContext);
@@ -39,30 +40,32 @@ const RemoveForm = () => {
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <h2 className="form__heading">Remove the person</h2>
+    <Card classNames={'remove-form'}>
+      <form className="form" onSubmit={handleSubmit}>
+        <h2 className="form__heading">Remove the person</h2>
 
-      <div className="form-control">
-        <label htmlFor="firstName">Key (first name): </label>
-        <input
-          type="text"
-          id="firstName"
-          value={firstName}
-          onChange={(e) => {
-            setFirstName(e.target.value);
-            if (submitted && e.target.value.trim().length === 0) {
-              setError('First name cannot be empty');
-            } else {
-              setError(null);
-            }
-          }}
-        />
+        <div className="form-control">
+          <label htmlFor="firstName">Key (first name): </label>
+          <input
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+              if (submitted && e.target.value.trim().length === 0) {
+                setError('First name cannot be empty');
+              } else {
+                setError(null);
+              }
+            }}
+          />
 
-        {error && <p className="form__error">{error}</p>}
-      </div>
+          {error && <p className="form__error">{error}</p>}
+        </div>
 
-      <button className="form__button">Remove</button>
-    </form>
+        <button className="form__button">Remove</button>
+      </form>
+    </Card>
   );
 };
 

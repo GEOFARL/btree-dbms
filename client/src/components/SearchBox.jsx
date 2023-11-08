@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Card from './Card';
 
 const SearchBox = () => {
   const [key, setKey] = useState('');
@@ -45,33 +46,35 @@ const SearchBox = () => {
   }, [result]);
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <h2 className="form__heading">Search the person</h2>
-      <div className="form-control">
-        <label htmlFor="searchFirstName">Key (first name):</label>
-        <input
-          type="text"
-          name="searchFirstName"
-          id="searchFirstName"
-          value={key}
-          onChange={(e) => {
-            setKey(e.target.value);
-            if (result) setResult(null);
-            if (submitted && e.target.value.trim().length === 0) {
-              setError('Key cannot be empty');
-              return;
-            } else {
-              setError(null);
-            }
-          }}
-        />
-        {error && <p className="form__error">{error}</p>}
-      </div>
+    <Card>
+      <form className="form search-form" onSubmit={handleSubmit}>
+        <h2 className="form__heading">Search the person</h2>
+        <div className="form-control">
+          <label htmlFor="searchFirstName">Key (first name):</label>
+          <input
+            type="text"
+            name="searchFirstName"
+            id="searchFirstName"
+            value={key}
+            onChange={(e) => {
+              setKey(e.target.value);
+              if (result) setResult(null);
+              if (submitted && e.target.value.trim().length === 0) {
+                setError('Key cannot be empty');
+                return;
+              } else {
+                setError(null);
+              }
+            }}
+          />
+          {error && <p className="form__error">{error}</p>}
+        </div>
 
-      {content}
+        {content}
 
-      <button className="form__button">Search</button>
-    </form>
+        <button className="form__button">Search</button>
+      </form>
+    </Card>
   );
 };
 

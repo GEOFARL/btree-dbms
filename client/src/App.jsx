@@ -5,7 +5,7 @@ import SearchBox from './components/SearchBox';
 
 function App() {
   return (
-    <div className="centered">
+    <div className="app centered">
       <AddForm />
       <RemoveForm />
       <SearchBox />
