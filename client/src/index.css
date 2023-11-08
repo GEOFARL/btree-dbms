@@ -60,6 +60,7 @@ input {
   border-collapse: collapse;
   border: 1px solid #9ca3af;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  min-width: 650px;
 }
 
 .table td,
@@ -149,4 +150,14 @@ input {
 
 .nav-button:hover {
   border-bottom: 2px solid black;
+}
+
+.loading-screen {
+  position: fixed;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
 }

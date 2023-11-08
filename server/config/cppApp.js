@@ -1,7 +1,7 @@
 import path from 'path';
-import { spawn } from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 
-const runProgram = (options) => {
+export const runProgram = (options) => {
   const programPath = path.join(
     path.resolve(),
     '..',
@@ -15,4 +15,16 @@ const runProgram = (options) => {
   return program;
 };
 
-export default runProgram;
+export const runProgramSync = (options) => {
+  const programPath = path.join(
+    path.resolve(),
+    '..',
+    'dbms',
+    'build',
+    'program'
+  );
+
+  const program = spawnSync(programPath, options);
+
+  return program;
+};

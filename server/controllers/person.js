@@ -1,4 +1,7 @@
-import runProgram from '../config/cppApp.js';
+import fs from 'fs';
+
+import { runProgram, runProgramSync } from '../config/cppApp.js';
+import generatePerson from '../utils/generatePerson.js';
 
 // @desc    Create a new person
 // @route   POST /api/person/create
@@ -159,4 +162,34 @@ export const searchPerson = (req, res) => {
     console.log(response, 'response');
     res.send(response);
   });
+};
+
+// @desc    Generate a lot of entries
+// @route   POST /api/person/generateData
+// @access  Public
+export const generateData = (req, res) => {
+  const { number } = req.query;
+
+  const people = [];
+
+  for (let i = 0; i < number; i += 1) {
+    const person = generatePerson();
+    people.push(person);
+    const { firstName, lastName, city, age } = person;
+    runProgramSync(['insert', firstName, lastName, city, age]);
+  }
+
+  res.send(people);
+};
+
+// @desc    Drop DB
+// @route   DELETE /api/person/dropDB
+// @access  Public
+export const dropDB = (req, res) => {
+  const path = '/Users/geofarl/repos/dbms-b-trees/lab3/dbms/db/db.txt';
+  if (fs.existsSync(path)) {
+    fs.rmSync(path);
+  }
+
+  res.send({ status: 'DB dropped successfully' });
 };

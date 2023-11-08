@@ -12,6 +12,13 @@ export default function peopleReducer(state, action) {
       );
       return people;
     }
+    case 'ADD_PEOPLE': {
+      const people = [...state, ...action.payload];
+      people.sort((a, b) =>
+        a.firstName.toLowerCase() < b.firstName.toLowerCase() ? -1 : 1
+      );
+      return people;
+    }
     case 'REMOVE_PERSON': {
       let deleted = false;
       return state.filter((person) => {
