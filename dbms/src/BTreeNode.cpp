@@ -190,7 +190,14 @@ void BTreeNode::remove(int key)
       fill(idx);
     }
 
-    C[idx]->remove(key);
+    if (inTheLastChild && idx > n)
+    {
+      C[idx - 1]->remove(key);
+    }
+    else
+    {
+      C[idx]->remove(key);
+    }
   }
 }
 
