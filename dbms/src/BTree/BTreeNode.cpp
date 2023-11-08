@@ -409,15 +409,15 @@ bool BTreeNode::modify(string key, Person *person)
     return false;
   }
 
-  cout << currentNode->keys.size() << endl;
   for (int i = 0; i < currentNode->n; i++)
   {
-    cout << "Here" << endl;
     if (currentNode->keys[i].first == key)
     {
       Person *tmp = currentNode->keys[i].second;
       currentNode->keys[i].second = person;
       delete tmp;
+      return true;
     }
   }
+  return false;
 }

@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PeopleContext } from '../context/PeopleContextProvider';
+import { ModifyContext } from '../context/ModificationContextProvider';
 
 const defaultFormData = {
   firstName: '',
@@ -16,11 +17,20 @@ const defaultFormError = {
 };
 
 const AddForm = () => {
+  const { state, dispatch: modifyDispatch } = useContext(ModifyContext);
   const { dispatch } = useContext(PeopleContext);
 
   const [formData, setFormData] = useState(defaultFormData);
   const [formError, setFormError] = useState(defaultFormError);
   const [submitted, setSubmitted] = useState(false);
+  const [modificationName, setModificationName] = useState('');
+
+  useEffect(() => {
+    if (state.isModifying) {
+      setFormData(state.entry);
+      setModificationName(state.entry.firstName);
+    }
+  }, [state]);
 
   const validateInput = (formData) => {
     let isValid = true;
@@ -72,15 +82,39 @@ const AddForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/person/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      dispatch({ type: 'ADD_PERSON', payload: data });
+      if (!state.isModifying) {
+        const response = await fetch(
+          'http://localhost:8000/api/person/create',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+        const data = await response.json();
+        dispatch({ type: 'ADD_PERSON', payload: data });
+      } else {
+        const response = await fetch(
+          'http://localhost:8000/api/person/modify',
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              key: modificationName,
+              data: formData,
+            }),
+          }
+        );
+        const data = await response.json();
+        dispatch({ type: 'MODIFY_PERSON', payload: data });
+        modifyDispatch({ type: 'NO_MODIFY' });
+      }
+
+      setFormData(defaultFormData);
     } catch (err) {
       console.error(err);
     }
@@ -88,7 +122,13 @@ const AddForm = () => {
 
   return (
     <form className="form" onSubmit={submitHandler}>
-      <h2 className="form__heading">Add a new person</h2>
+      {
+        <h2 className="form__heading">
+          {!state || !state.isModifying
+            ? 'Add a new person'
+            : 'Modifying the existing person'}
+        </h2>
+      }
 
       <div className="form-control">
         <label htmlFor="fName">First Name: </label>

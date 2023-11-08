@@ -1,7 +1,9 @@
 import { useContext, useMemo } from 'react';
 import { PeopleContext } from '../context/PeopleContextProvider';
+import { ModifyContext } from '../context/ModificationContextProvider';
 
 const PeopleTable = () => {
+  const { dispatch } = useContext(ModifyContext);
   const { state } = useContext(PeopleContext);
 
   console.log(state);
@@ -16,11 +18,17 @@ const PeopleTable = () => {
         <td>{entry.city}</td>
         <td>{entry.age}</td>
         <td>
-          <button>Modify</button>
+          <button
+            onClick={() => {
+              dispatch({ type: 'SET_MODIFY', payload: entry });
+            }}
+          >
+            Modify
+          </button>
         </td>
       </tr>
     ));
-  }, [state]);
+  }, [state, dispatch]);
 
   return (
     <>

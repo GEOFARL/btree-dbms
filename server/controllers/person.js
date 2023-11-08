@@ -88,3 +88,42 @@ export const getAll = (req, res) => {
     res.send(response);
   });
 };
+
+// @desc    Modify an existing person
+// @route   PATCH /api/person/modify
+// @access  Public
+export const modifyPerson = (req, res) => {
+  const { data, key } = req.body;
+  const { id, firstName, lastName, city, age } = data;
+  const program = runProgram([
+    'modify',
+    key,
+    id,
+    firstName,
+    lastName,
+    city,
+    age,
+  ]);
+  let response = {};
+
+  program.stdout.on('data', (chunk) => {
+    const data = chunk
+      .toString()
+      .replace('Modified: ', '')
+      .replace(/\n/g, '')
+      .trim();
+    const [id, firstName, lastName, city, age] = data.split(',');
+    response = { id, firstName, lastName, city, age };
+  });
+
+  program.stderr.on('data', (data) => {
+    console.log('Error:');
+    console.error(data.toString());
+  });
+
+  program.on('close', (code) => {
+    console.log(`Closed with code ${code}`);
+    console.log(response, 'response');
+    res.send(response);
+  });
+};

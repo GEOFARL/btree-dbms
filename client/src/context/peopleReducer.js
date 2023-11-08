@@ -19,6 +19,18 @@ export default function peopleReducer(state, action) {
       });
     }
 
+    case 'MODIFY_PERSON': {
+      console.log(action);
+      let found = false;
+      return state.map((person) => {
+        if (!found && person.firstName === action.payload.firstName) {
+          found = true;
+          return action.payload;
+        }
+        return person;
+      });
+    }
+
     case 'SET_PEOPLE': {
       return action.payload;
     }
