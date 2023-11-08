@@ -6,10 +6,18 @@ import runProgram from '../config/cppApp.js';
 export const createPerson = (req, res) => {
   const { firstName, lastName, city, age } = req.body;
   const program = runProgram(['insert', firstName, lastName, city, age]);
+  let newPerson = {};
 
   program.stdout.on('data', (chunk) => {
     console.log('Output:');
-    console.log(chunk.toString());
+    const data = chunk
+      .toString()
+      .replace('Inserted: ', '')
+      .replace(/\n/g, '')
+      .trim();
+    const [id, firstName, lastName, city, age] = data.split(',');
+    newPerson = { id, firstName, lastName, city, age };
+    console.log(newPerson);
   });
 
   program.stderr.on('data', (data) => {
@@ -19,7 +27,7 @@ export const createPerson = (req, res) => {
 
   program.on('close', (code) => {
     console.log(`Closed with code ${code}`);
-    res.send({});
+    res.send(newPerson);
   });
 };
 
@@ -43,7 +51,7 @@ export const deletePerson = (req, res) => {
 
   program.on('close', (code) => {
     console.log(`Closed with code ${code}`);
-    res.send({});
+    res.send({ firstName });
   });
 };
 

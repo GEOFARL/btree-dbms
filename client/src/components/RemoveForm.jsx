@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { PeopleContext } from '../context/PeopleContextProvider';
 
 const RemoveForm = () => {
+  const { dispatch } = useContext(PeopleContext);
+
   const [firstName, setFirstName] = useState('');
   const [error, setError] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -26,7 +29,10 @@ const RemoveForm = () => {
         },
         body: JSON.stringify({ firstName }),
       });
-      console.log(response);
+
+      const data = await response.json();
+
+      dispatch({ type: 'REMOVE_PERSON', payload: data.firstName });
     } catch (err) {
       console.error(err);
     }

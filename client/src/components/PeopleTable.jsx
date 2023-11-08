@@ -1,49 +1,26 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
+import { PeopleContext } from '../context/PeopleContextProvider';
 
 const PeopleTable = () => {
-  const [peopleData, setPeopleData] = useState(null);
+  const { state } = useContext(PeopleContext);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:8000/api/person/getAll',
-          {
-            signal: abortController.signal,
-          }
-        );
-
-        const data = await response.json();
-
-        console.log(data);
-
-        setPeopleData(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  console.log(state);
 
   const content = useMemo(() => {
-    if (!peopleData) return null;
-    return peopleData.map((entry) => (
+    if (!state) return null;
+    return state.map((entry) => (
       <tr key={entry.id}>
         <td>{entry.id}</td>
         <td>{entry.firstName}</td>
         <td>{entry.lastName}</td>
         <td>{entry.city}</td>
         <td>{entry.age}</td>
+        <td>
+          <button>Modify</button>
+        </td>
       </tr>
     ));
-  }, [peopleData]);
+  }, [state]);
 
   return (
     <>
@@ -56,6 +33,7 @@ const PeopleTable = () => {
             <th>Last Name</th>
             <th>City</th>
             <th>Age</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{content}</tbody>

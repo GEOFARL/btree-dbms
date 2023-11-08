@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { PeopleContext } from '../context/PeopleContextProvider';
 
 const defaultFormData = {
   firstName: '',
@@ -15,6 +16,8 @@ const defaultFormError = {
 };
 
 const AddForm = () => {
+  const { dispatch } = useContext(PeopleContext);
+
   const [formData, setFormData] = useState(defaultFormData);
   const [formError, setFormError] = useState(defaultFormError);
   const [submitted, setSubmitted] = useState(false);
@@ -76,7 +79,8 @@ const AddForm = () => {
         },
         body: JSON.stringify(formData),
       });
-      console.log(response);
+      const data = await response.json();
+      dispatch({ type: 'ADD_PERSON', payload: data });
     } catch (err) {
       console.error(err);
     }
