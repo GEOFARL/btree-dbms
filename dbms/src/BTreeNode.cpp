@@ -183,11 +183,14 @@ void BTreeNode::remove(int key)
       cout << "The key " << key << " does not exist on the tree" << endl;
     }
 
-    C[idx]->remove(key);
+    bool inTheLastChild = (idx == n);
 
-    // TODO: Handle edge cases:
-    // node has t - 1 keys
-    // the key is in the last node which has been merged with the previous one
+    if (C[idx]->n == t - 1)
+    {
+      fill(idx);
+    }
+
+    C[idx]->remove(key);
   }
 }
 
@@ -301,4 +304,32 @@ void BTreeNode::merge(int idx)
 
   delete sibling;
   return;
+}
+
+void BTreeNode::fill(int idx)
+{
+  // If the previous child has more than t - 1 keys
+  // Borrow a key from that child
+  if (idx != 0 && C[idx - 1]->n > t - 1)
+  {
+    // TODO: Borrow from previous child
+  }
+  // If the next child has more than t - 1 keys
+  // Borrow a key from that child
+  else if (idx != n && C[idx + 1]->n > t - 1)
+  {
+    // TODO: Borrow from next child
+  }
+  // Both children do not have enough keys, so merge them
+  else
+  {
+    if (idx != n)
+    {
+      merge(idx);
+    }
+    else
+    {
+      merge(idx - 1);
+    }
+  }
 }

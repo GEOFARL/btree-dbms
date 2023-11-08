@@ -28,6 +28,7 @@ private:
   void splitChild(int i, BTreeNode *y);
 
   void merge(int index);
+  void fill(int index);
 
   int findKey(int key);
   int getPred(int index);
