@@ -31,12 +31,23 @@ body {
 }
 
 .table {
+  background-color: #f3f4f6;
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid #9ca3af;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .table td,
 .table th {
-  padding: 5px 10px;
-  border: 1px solid black;
+  padding: 5px 15px;
+  text-align: center;
+  border: 1px solid #9ca3af;
+}
+
+.table td {
+  color: #262626;
+}
+
+.table tr:nth-child(odd) {
+  background-color: #d1d5db !important; /* Background color for odd rows */
 }

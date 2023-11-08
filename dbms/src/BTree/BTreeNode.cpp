@@ -40,7 +40,8 @@ void BTreeNode::traverse()
 BTreeNode *BTreeNode::search(string k)
 {
   int i{};
-  while (i < n && k > keys[i].first)
+  // while (i < n && k > keys[i].first)
+  while (i < n && caseInsensitiveStringCompare(keys[i].first, k))
   {
     i += 1;
   }
@@ -66,7 +67,8 @@ void BTreeNode::insertNonFull(Person *person)
   {
     // Find a place to insert and move all the
     // elements greater than a key one place ahead
-    while (i >= 0 && keys[i].first > person->fname)
+    // while (i >= 0 && keys[i].first > person->fname)
+    while (i >= 0 && caseInsensitiveStringCompare(person->fname, keys[i].first))
     {
       keys[i + 1] = keys[i];
       i -= 1;
@@ -79,7 +81,8 @@ void BTreeNode::insertNonFull(Person *person)
   else // Node is not a leaf
   {
     // Find a child that will have this new key
-    while (i >= 0 && keys[i].first > person->fname)
+    // while (i >= 0 && keys[i].first > person->fname)
+    while (i >= 0 && caseInsensitiveStringCompare(person->fname, keys[i].first))
     {
       i -= 1;
     }
@@ -93,7 +96,8 @@ void BTreeNode::insertNonFull(Person *person)
       // key will get to the keys array at i + 1 position
       // so we need to find out in which of the children
       // to insert a new key
-      if (keys[i + 1].first < person->fname)
+      // if (keys[i + 1].first < person->fname)
+      if (caseInsensitiveStringCompare(keys[i + 1].first, person->fname))
       {
         i += 1;
       }
@@ -150,7 +154,8 @@ void BTreeNode::splitChild(int i, BTreeNode *y)
 int BTreeNode::findKey(string &k)
 {
   int idx = 0;
-  while (idx < n && keys[idx].first < k)
+  // while (idx < n && keys[idx].first < k)
+  while (idx < n && caseInsensitiveStringCompare(k, keys[idx].first))
     ++idx;
   return idx;
 }
@@ -420,4 +425,14 @@ bool BTreeNode::modify(string key, Person *person)
     }
   }
   return false;
+}
+
+bool BTreeNode::caseInsensitiveStringCompare(const std::string &str1, const std::string &str2)
+{
+  std::locale loc;
+  return std::lexicographical_compare(str1.begin(), str1.end(), str2.begin(), str2.end(),
+                                      [&loc](char c1, char c2)
+                                      {
+                                        return std::tolower(c1, loc) < std::tolower(c2, loc);
+                                      });
 }

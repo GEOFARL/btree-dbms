@@ -6,8 +6,6 @@ const PeopleTable = () => {
   const { dispatch } = useContext(ModifyContext);
   const { state } = useContext(PeopleContext);
 
-  console.log(state);
-
   const content = useMemo(() => {
     if (!state) return null;
     return state.map((entry) => (

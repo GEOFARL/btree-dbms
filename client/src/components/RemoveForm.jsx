@@ -13,7 +13,7 @@ const RemoveForm = () => {
     setSubmitted(true);
 
     if (firstName.trim().length === 0) {
-      setError('First name cannot be empty');
+      setError('Key cannot be empty');
       return;
     } else {
       setError(null);
@@ -43,7 +43,7 @@ const RemoveForm = () => {
       <h2 className="form__heading">Remove the person</h2>
 
       <div className="form-control">
-        <label htmlFor="firstName">First Name: </label>
+        <label htmlFor="firstName">Key (first name): </label>
         <input
           type="text"
           id="firstName"

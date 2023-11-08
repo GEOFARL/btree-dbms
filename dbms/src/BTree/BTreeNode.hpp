@@ -43,5 +43,7 @@ private:
 
   BTreeNode *search(string key);
 
+  bool caseInsensitiveStringCompare(const std::string &str1, const std::string &str2);
+
   friend class BTree;
 };

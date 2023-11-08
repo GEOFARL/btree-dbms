@@ -1,12 +1,16 @@
 export default function peopleReducer(state, action) {
   switch (action.type) {
     case 'ADD_PERSON': {
-      return [
+      const people = [
         ...state,
         {
           ...action.payload,
         },
       ];
+      people.sort((a, b) =>
+        a.firstName.toLowerCase() < b.firstName.toLowerCase() ? -1 : 1
+      );
+      return people;
     }
     case 'REMOVE_PERSON': {
       let deleted = false;

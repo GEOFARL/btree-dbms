@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <locale>
+#include <algorithm>
 #include "BTreeNode.hpp"
 
 #include "../Models/Person.hpp"

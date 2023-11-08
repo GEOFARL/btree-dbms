@@ -27,7 +27,7 @@ export const createPerson = (req, res) => {
 
   program.on('close', (code) => {
     console.log(`Closed with code ${code}`);
-    res.send(newPerson);
+    res.status(201).send(newPerson);
   });
 };
 
@@ -114,6 +114,39 @@ export const modifyPerson = (req, res) => {
       .trim();
     const [id, firstName, lastName, city, age] = data.split(',');
     response = { id, firstName, lastName, city, age };
+  });
+
+  program.stderr.on('data', (data) => {
+    console.log('Error:');
+    console.error(data.toString());
+  });
+
+  program.on('close', (code) => {
+    console.log(`Closed with code ${code}`);
+    console.log(response, 'response');
+    res.send(response);
+  });
+};
+
+// @desc    Search the person
+// @route   GET /api/person/search
+// @access  Public
+export const searchPerson = (req, res) => {
+  const searchKey = req.query.key;
+
+  const program = runProgram(['search', searchKey]);
+  let response = {};
+
+  program.stdout.on('data', (chunk) => {
+    if (chunk.toString().startsWith('Found:')) {
+      const data = chunk
+        .toString()
+        .replace('Found: ', '')
+        .replace(/\n/g, '')
+        .trim();
+      const [id, firstName, lastName, city, age] = data.split(',');
+      response = { id, firstName, lastName, city, age };
+    }
   });
 
   program.stderr.on('data', (data) => {

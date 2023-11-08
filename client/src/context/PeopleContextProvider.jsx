@@ -20,7 +20,6 @@ const PeopleContextProvider = ({ children }) => {
         );
 
         const data = await response.json();
-        console.log(data);
 
         dispatch({ type: 'SET_PEOPLE', payload: data });
       } catch (err) {
