@@ -31,7 +31,6 @@ export default function peopleReducer(state, action) {
     }
 
     case 'MODIFY_PERSON': {
-      console.log(action);
       let found = false;
       return state.map((person) => {
         if (!found && person.firstName === action.payload.key) {

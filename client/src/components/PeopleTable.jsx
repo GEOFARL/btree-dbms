@@ -19,6 +19,7 @@ const PeopleTable = () => {
           <button
             onClick={() => {
               dispatch({ type: 'SET_MODIFY', payload: entry });
+              window.scrollTo(0, 0);
             }}
             className="form__button modify-button"
           >
